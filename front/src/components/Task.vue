@@ -1,7 +1,7 @@
 <template>
   <div class="task">
 
-      <input type="checkbox" @click="toogleChecked">
+      <input type="checkbox" @click="toogleChecked" :disabled="!isEditing ? disabled : ''">
 
       <input :class="{checked : isChecked}" class="task-name" type="text" v-model="taskName" :disabled="isEditing ? disabled : ''" />
 
@@ -37,6 +37,10 @@ export default {
         }
 
         const update = () => {
+            if(taskName.value === ""){
+                return
+            }
+
             // Emit evento actualizar con id y nuevo nombre
             context.emit('update', props.task.id, taskName.value)
             isEditing.value = false
