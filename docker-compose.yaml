@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  db: 
+    image: postgres
+    # Variables de configuración de Postgres
+    environment:
+      - POSTGRES_DB=task-hub
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+    # Enlace entre los puertos locales y del contenedor.
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
