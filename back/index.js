@@ -1,14 +1,12 @@
 import express from 'express';
+import route from './src/routes' 
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Create a catch-all route for testing the installation.
-app.get('*', (req, res) => res.status(200).send({
-  message: 'Hello World!',
-}));
+route(app)
 
 const port = 5000;
 
