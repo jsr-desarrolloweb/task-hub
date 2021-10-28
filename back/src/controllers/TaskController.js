@@ -44,7 +44,8 @@ export default {
             const task = await Task.findByPk(req.params.taskID)
             if (task) {
                 const updatedTask = await Task.update({
-                    name: req.body.name
+                    name: req.body.name,
+                    isChecked: req.body.isChecked
                 },
                 { where: { id:  req.params.taskID} }
                 )
@@ -54,7 +55,6 @@ export default {
             }
             
         } catch (error) {
-            console.log(error)
             return res.status(500).send({
                 message: 'Could not perform operation at this time, kindly try again later...'
             })      
@@ -62,7 +62,22 @@ export default {
     },
 
     // DELETE
-    
+    async deleteTask(req, res){
+        try {
+            const task = await Task.findByPk(req.params.taskID)
+            if (task){
+                task.destroy()
+                res.status(204).send("resource deleted successfully")
+            } else {
+                res.status(404).send("Task Not Found")
+            }
+        } catch (error) {
+            return res.status(500).send({
+                message: 'Could not perform operation at this time, kindly try again later...'
+            })                
+        }
+    }
+
 }
 
 
