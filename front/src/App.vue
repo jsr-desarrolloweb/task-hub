@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onBeforeMount, onMounted } from 'vue'
 import TaskForm from './components/TaskForm.vue'
 import Task from './components/Task.vue'
 
@@ -24,36 +24,67 @@ export default {
   },
   setup(){
     // Lista de tareas iniciales
-    const tasks = ref([
-      {id: 1, name: 'Task 01'},
-      {id: 2, name: 'Task 02'},
-      {id: 3, name: 'Task 03'}
-    ])
+    // const tasks = ref([
+    //   {id: 1, name: 'Task 01'},
+    //   {id: 2, name: 'Task 02'},
+    //   {id: 3, name: 'Task 03'}
+    // ])
+    const tasks = ref([])
 
-    // Añade tarea
-    const addTask = (task) => {
-      tasks.value.push(task)
-      console.log(tasks.value)
+    onBeforeMount(() => {
+      getAllTasks()
+    })
+
+    // Obtener todas las tareas
+    const getAllTasks = async () => {
+      await fetch('http://localhost:5000/tasks')
+      .then(response => response.json())
+      .then(result => tasks.value = result)
+      .catch(err => console.log(err))
     }
 
-    // Elimina tarea por ID
-    const eliminateTask = (id) => {
-      let filteredArray = tasks.value.filter((item) => {
-        return item.id !== id
-      })
-      tasks.value = filteredArray  
+    // Añade tarea
+    const addTask = async (task) => {
+      await fetch('http://localhost:5000/task/create', {
+              method: 'POST',
+              body: JSON.stringify(task), 
+              headers:{
+                'Content-Type': 'application/json'
+      }})
+      .then(() => tasks.value.push(task))
+      .catch(err => console.log(err))
     }
 
     // Actualiza tarea por ID
-    const updateTask = (id, newName) => {
-      for (const task of tasks.value) {
-        if (task.id === id) {
-          task.name = newName
-        }
-      }
+    // const updateTask = async (id, data) => {
+    //   // for (const task of tasks.value) {
+    //   //   if (task.id === id) {
+    //   //     task.name = newName
+    //   //   }
+    //   // }
+    //   await fetch('http://localhost:5000/task/'+ id +'/update', {
+    //           method: 'PUT',
+    //           body: JSON.stringify(data), 
+    //           headers:{
+    //             'Content-Type': 'application/json'
+    //   }})
+    //   .then( ()=> console.log('tarea actualizada correctamente'))
+    //   .catch(err => console.log(err))
+    // }
+
+    // // Elimina tarea por ID
+    const eliminateTask = async (id) => {
+      await fetch('http://localhost:5000/task/'+ id +'/delete', {method: 'DELETE'})
+      .then(()=>{
+        let filteredArray = tasks.value.filter((item) => {
+        return item.id !== id
+      })
+      tasks.value = filteredArray
+      })
+      .catch(err => console.log(err))  
     }
 
-    return { tasks, addTask, updateTask, eliminateTask }
+    return { tasks, getAllTasks, addTask, eliminateTask }
   }
 }
 </script>
