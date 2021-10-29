@@ -56,21 +56,25 @@ export default {
     }
 
     // Actualiza tarea por ID
-    // const updateTask = async (id, data) => {
-    //   // for (const task of tasks.value) {
-    //   //   if (task.id === id) {
-    //   //     task.name = newName
-    //   //   }
-    //   // }
-    //   await fetch('http://localhost:5000/task/'+ id +'/update', {
-    //           method: 'PUT',
-    //           body: JSON.stringify(data), 
-    //           headers:{
-    //             'Content-Type': 'application/json'
-    //   }})
-    //   .then( ()=> console.log('tarea actualizada correctamente'))
-    //   .catch(err => console.log(err))
-    // }
+    const updateTask = async (id, editedTask) => {
+      // for (const task of tasks.value) {
+      //   if (task.id === id) {
+      //     task.name = newName
+      //   }
+      // }
+      console.log(editedTask)
+      await fetch('http://localhost:5000/task/'+ id +'/update', {
+              method: 'PUT',
+              body: JSON.stringify({
+                name: editedTask.name,
+                isChecked: editedTask.isChecked
+              }), 
+              headers:{
+                'Content-Type': 'application/json'
+      }})
+      .then( ()=> console.log('tarea actualizada correctamente'))
+      .catch(err => console.log(err))
+    }
 
     // // Elimina tarea por ID
     const eliminateTask = async (id) => {
@@ -84,7 +88,7 @@ export default {
       .catch(err => console.log(err))  
     }
 
-    return { tasks, getAllTasks, addTask, eliminateTask }
+    return { tasks, getAllTasks, addTask, updateTask, eliminateTask }
   }
 }
 </script>
