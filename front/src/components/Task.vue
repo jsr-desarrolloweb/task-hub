@@ -1,7 +1,7 @@
 <template>
   <div class="task">
 
-      <input type="checkbox" @click="toogleChecked" :disabled="!isEditing ? disabled : ''">
+      <input :checked="isChecked" type="checkbox" @click="toogleChecked" :disabled="!isEditing ? disabled : ''" >
 
       <input :class="{checked : isChecked}" class="task-name" type="text" v-model="taskName" :disabled="isEditing ? disabled : ''" />
 
@@ -18,12 +18,14 @@ import { ref } from 'vue'
 export default {
     props: ['task'],
     setup(props, context){
-        const isChecked = ref(false)
-        const isEditing = ref(false)
+        const isChecked = ref(props.task.isChecked)
         const taskName = ref(props.task.name)
+        const isEditing = ref(false)
 
         const toogleChecked = (e) => {
             isChecked.value = e.target.checked
+            let editedTask = {name:taskName.value, isChecked: isChecked.value}
+            context.emit('update', props.task.id, editedTask)
         }
 
         const eliminate = () => {
@@ -40,9 +42,9 @@ export default {
             if(taskName.value === ""){
                 return
             }
-
             // Emit evento actualizar con id y nuevo nombre
-            context.emit('update', props.task.id, taskName.value)
+            let editedTask = {name:taskName.value, isChecked: isChecked.value}
+            context.emit('update', props.task.id, editedTask)
             isEditing.value = false
         }
         

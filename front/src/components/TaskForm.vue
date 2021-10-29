@@ -23,7 +23,8 @@ export default {
                 return
             }
             // Emite evento que recibe el padre con la tarea como argumento
-            let newTask = {id: parseInt( Math.random()*10000), name: newTaskName.value}
+            // let newTask = {id: parseInt( Math.random()*10000), name: newTaskName.value}
+            let newTask = {name: newTaskName.value, isChecked: false}
             context.emit('taskFormSubmit', newTask)
 
             newTaskName.value = ""
