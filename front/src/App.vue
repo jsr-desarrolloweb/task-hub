@@ -35,6 +35,8 @@ export default {
       getAllTasks()
     })
 
+    // TODO: cuando crea una nueva tarea, no mete el id es tasks
+
     // Obtener todas las tareas
     const getAllTasks = async () => {
       await fetch('http://localhost:5000/tasks')
@@ -51,8 +53,10 @@ export default {
               headers:{
                 'Content-Type': 'application/json'
       }})
-      .then(() => tasks.value.push(task))
+      .then(res => res.json())
+      .then((task) => tasks.value.push(task))
       .catch(err => console.log(err))
+
     }
 
     // Actualiza tarea por ID
@@ -62,7 +66,6 @@ export default {
       //     task.name = newName
       //   }
       // }
-      console.log(editedTask)
       await fetch('http://localhost:5000/task/'+ id +'/update', {
               method: 'PUT',
               body: JSON.stringify({
@@ -72,8 +75,12 @@ export default {
               headers:{
                 'Content-Type': 'application/json'
       }})
-      .then( ()=> console.log('tarea actualizada correctamente'))
+      .then( () => {
+        console.log('updated correctamente')
+      })
       .catch(err => console.log(err))
+
+      console.log(tasks.value)
     }
 
     // // Elimina tarea por ID
@@ -85,7 +92,9 @@ export default {
       })
       tasks.value = filteredArray
       })
-      .catch(err => console.log(err))  
+      .catch(err => console.log(err))
+      
+
     }
 
     return { tasks, getAllTasks, addTask, updateTask, eliminateTask }

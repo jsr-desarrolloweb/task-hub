@@ -24,11 +24,11 @@ export default {
     async createTask(req, res) {      
         try {
             const {name, isChecked} = req.body       
-            await Task.create({
+            const task = await Task.create({
                 name,
                 isChecked
             })
-            return res.status(201).send({message: 'Task created successfully'})
+            return res.status(201).send(task)
         } catch (error) {
             return res.status(500).send({
                 message: 'Could not perform operation at this time, kindly try again later...'
