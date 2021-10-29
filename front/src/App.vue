@@ -56,16 +56,10 @@ export default {
       .then(res => res.json())
       .then((task) => tasks.value.push(task))
       .catch(err => console.log(err))
-
     }
 
     // Actualiza tarea por ID
     const updateTask = async (id, editedTask) => {
-      // for (const task of tasks.value) {
-      //   if (task.id === id) {
-      //     task.name = newName
-      //   }
-      // }
       await fetch('http://localhost:5000/task/'+ id +'/update', {
               method: 'PUT',
               body: JSON.stringify({
@@ -76,11 +70,14 @@ export default {
                 'Content-Type': 'application/json'
       }})
       .then( () => {
-        console.log('updated correctamente')
+      for (const task of tasks.value) {
+        if (task.id === id) {
+          task.name = editedTask.name
+          task.isChecked = editedTask.isChecked
+        }
+      }
       })
       .catch(err => console.log(err))
-
-      console.log(tasks.value)
     }
 
     // // Elimina tarea por ID
