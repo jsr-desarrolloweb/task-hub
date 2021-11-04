@@ -12,7 +12,24 @@ services:
     # Enlace entre los puertos locales y del contenedor.
       - 5432:5432
 
+  back:
+    build: ./back
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
+  front:
+    build: ./front
+    ports:
+      - 8081:8081
+
   adminer:
     image: adminer
     ports:
       - 8080:8080
+
+
+
