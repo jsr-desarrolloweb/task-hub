@@ -5,9 +5,6 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:${PATH}
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package*.json ./
 
 # Once we have our files inside the image, we can use the RUN command to execute the command npm install.

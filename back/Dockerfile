@@ -10,16 +10,11 @@ ENV PATH /app/node_modules/.bin:${PATH}
 # where available (npm@5+)
 COPY package*.json ./
 
-# Once we have our files inside the image, we can use the RUN command to execute the command npm install.
-# RUN npm install
-
 # Add our source code into the image.
 COPY . .
 
 EXPOSE 5000
 
-# RUN npx sequelize db:migrate
-# RUN ./node_modules/.bin/sequelize db:migrate
 ENTRYPOINT [ "/bin/sh", "./entrypoint.sh" ]
 # CMD [ "npm", "start" ]
 
