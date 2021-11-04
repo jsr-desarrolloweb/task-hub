@@ -1,9 +1,8 @@
 version: "3.7"
 
 services:
-  database: 
+  db: 
     image: postgres
-    restart: always
     # Variables de configuración de Postgres
     environment:
       - POSTGRES_DB=task-hub
@@ -18,7 +17,9 @@ services:
     ports:
       - 5000:5000
     depends_on:
-      - database
+      - db
+    environment:
+      - DB_HOST=db
 
   front:
     build: ./front
